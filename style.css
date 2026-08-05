@@ -1,0 +1,190 @@
+/* 항목 Status — 색상/레이아웃. 값은 스펙 7장 그대로. */
+:root{
+  --blue:#185FA5; --navy:#042C53;
+  --bg:#F5F7FA; --surface:#FFF; --border:#E1E7EF;
+  --text:#1A2733; --text2:#5C6B7A;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI","Malgun Gothic",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.5;
+  height:100vh;display:flex;flex-direction:column;overflow:hidden}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;
+  background:var(--navy);color:#fff;padding:12px 24px}
+.topbar .brand{color:#fff;font-weight:700;font-size:18px}
+.topbar .who{font-size:14px}
+.topbar a{color:#cfe0f2}
+.tag{background:#ffffff22;padding:2px 8px;border-radius:10px;font-size:12px}
+.tag.admin{background:var(--blue)}
+
+main{flex:1;min-height:0;margin:0;padding:20px 10%;overflow:hidden}
+.pagehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+h1{font-size:22px;margin:0}
+h2{font-size:17px;margin:24px 0 10px;color:var(--navy)}
+
+.card{background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:16px 20px;margin-bottom:16px}
+
+table{width:100%;border-collapse:collapse;background:var(--surface);
+  border:1px solid var(--border);border-radius:8px;overflow:hidden}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:#eef2f7;color:var(--text2);font-size:13px}
+tr:last-child td{border-bottom:none}
+
+.status{background:#eef2f7;color:var(--text2);padding:2px 10px;
+  border-radius:10px;font-size:13px;white-space:nowrap}
+.count{font-weight:700}
+.count.warn{color:#EF9F27}
+
+/* request 상태 배지 — 배경 / 글자·테두리 (스펙 표) */
+.badge{display:inline-block;padding:2px 10px;border-radius:10px;
+  font-size:13px;font-weight:600;border:1px solid}
+.badge.pending {background:#FAEEDA;color:#633806;border-color:#EF9F27}
+.badge.progress{background:#E6F1FB;color:#0C447C;border-color:#378ADD}
+.badge.done    {background:#EAF3DE;color:#27500A;border-color:#639922}
+.badge.rejected{background:#F1EFE8;color:#444441;border-color:#888780}
+/* 통합 상태 배지 색 */
+.badge.st-new  {background:#EEF2F7;color:#42556B;border-color:#C3CFDD}
+.badge.st-dev  {background:#E6F1FB;color:#0C447C;border-color:#378ADD}
+.badge.st-live {background:#EAF3DE;color:#27500A;border-color:#639922}
+.badge.st-check{background:#FAEEDA;color:#633806;border-color:#EF9F27}
+.badge.st-warn {background:#FBE4CE;color:#7A3E00;border-color:#E08B1E}
+.badge.st-stop {background:#F1EFE8;color:#444441;border-color:#888780}
+
+.btn,button{background:var(--blue);color:#fff;border:none;border-radius:6px;
+  padding:8px 14px;font-size:14px;cursor:pointer}
+.btn:hover,button:hover{background:#14508c;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--blue);border:1px solid var(--border)}
+.btn.danger{background:#b23c3c}
+.btn.sm,button.sm{padding:4px 10px;font-size:13px}
+
+input,textarea,select{width:100%;padding:8px 10px;border:1px solid var(--border);
+  border-radius:6px;font:inherit;margin:4px 0 10px}
+textarea{min-height:70px;resize:vertical}
+label{font-size:13px;color:var(--text2)}
+
+.timeline{list-style:none;padding:0;margin:0}
+.timeline li{border-left:3px solid var(--blue);padding:2px 0 14px 14px;margin-left:6px}
+.timeline .meta{font-size:12px;color:var(--text2)}
+
+.muted{color:var(--text2)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+dialog{border:1px solid var(--border);border-radius:8px;padding:20px;width:420px;max-width:92vw}
+dialog::backdrop{background:#0006}
+
+/* ── 마스터-디테일 레이아웃 ────────────────────────────── */
+.split{display:grid;grid-template-columns:3fr 7fr;gap:16px;height:100%;min-height:0}
+.list-pane,.detail-pane{min-height:0;overflow-y:auto}   /* 좌·우 각자 스크롤 */
+.detail-pane{padding-right:4px}
+.list-pane{padding:12px}
+.list-pane .pagehead{margin:2px 6px 8px}
+.list-pane h1{font-size:18px}
+
+table.list{border:none;background:none}
+table.list td{border-bottom:1px solid var(--border);padding:0}
+table.list tr:last-child td{border-bottom:none}
+table.list tr.sel{background:#E6F1FB}
+table.list tr:hover{background:#f2f6fb}
+td.name a{display:block;color:var(--text);padding:9px 8px}
+td.name a:hover{text-decoration:none}
+td.name .sub{display:block;font-size:12px;margin-top:2px}
+td.cnt{text-align:right;width:auto;padding-right:8px;vertical-align:top;white-space:nowrap}
+td.cnt .badge{font-size:11px;padding:1px 7px;margin-bottom:4px}
+
+.detail-pane h1{font-size:20px}
+
+/* 세로/좁은 화면: 1컬럼으로 접고 목록은 ~10행만 보이게(스크롤) → 아래로 상세·이력 */
+@media (max-width:820px){
+  body{height:auto;display:block;overflow:visible}   /* 좁은 화면: 문서 스크롤 복원 */
+  main{flex:none;margin:0;padding:16px 4%;overflow:visible}
+  .split{grid-template-columns:1fr;height:auto}
+  .list-pane{max-height:460px;overflow:auto}
+  .detail-pane{overflow:visible;padding-right:0}
+}
+
+/* ── 요청 카드 + 처리 답글(reply) ────────────────────────── */
+.req{padding:12px 14px}
+.req-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.reply{margin:8px 0 0 18px;padding:8px 12px;border-left:3px solid var(--border);
+  background:#fafbfc;border-radius:0 6px 6px 0}
+.reply-head{font-size:12px}
+.reply-note{margin-top:4px;white-space:pre-wrap}
+.reply-form{margin-top:10px;border-top:1px dashed var(--border);padding-top:10px}
+.reply-form textarea{min-height:46px;margin:0 0 8px}
+.reply-form .row{justify-content:flex-end}
+.reply-form select{width:auto}
+
+/* ── 목록: 요청 상태 카운트 칩(4색) + 진행률 ─────────────── */
+.reqcounts{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.chip{font-size:11px;line-height:1.7;padding:0 6px;border-radius:8px;border:1px solid;font-weight:600}
+.chip.pending {background:#FAEEDA;color:#633806;border-color:#EF9F27}
+.chip.progress{background:#E6F1FB;color:#0C447C;border-color:#378ADD}
+.chip.done    {background:#EAF3DE;color:#27500A;border-color:#639922}
+.chip.rejected{background:#F1EFE8;color:#444441;border-color:#888780}
+.chip.zero{opacity:.3}
+td.cnt .pct{display:block;font-weight:700;color:var(--blue);font-size:13px}
+
+/* ── 상세: 진행 체크리스트 ───────────────────────────────── */
+.pct-detail{font-size:14px;color:var(--blue);font-weight:700}
+ul.tasks{list-style:none;padding:0;margin:0 0 8px}
+ul.tasks li{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border)}
+ul.tasks li:last-child{border-bottom:none}
+ul.tasks label{display:flex;align-items:center;gap:8px;flex:1;cursor:pointer;font-size:14px;color:var(--text)}
+ul.tasks input[type=checkbox]{width:auto;margin:0;cursor:pointer}
+ul.tasks .checked{text-decoration:line-through;color:var(--text2)}
+.inline-del{display:inline;margin:0}
+.tasks .x{background:none;color:var(--text2);padding:0 4px;font-size:12px}
+.tasks .x:hover{background:none;color:#b23c3c}
+.task-add{margin-top:4px}
+.task-add input{margin:0}
+
+/* 진행 상태 배지(상세) + 총 요청 칩 + 진행 상태 변경 폼 */
+.chip.total{background:var(--navy);color:#fff;border-color:var(--navy)}
+.card.prog{padding:12px 14px}
+.prog-cur{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.prog-note{font-size:13px;white-space:pre-wrap}
+.prog-form{margin-top:10px;border-top:1px dashed var(--border);padding-top:10px}
+.prog-form select{width:auto}
+.prog-form textarea{min-height:44px;margin:8px 0 0}
+
+/* 진행상태 자동기록 이력 구분(수동 이력과 다르게) */
+.timeline li.auto{border-left-color:var(--blue);background:#f2f7fc;border-radius:0 6px 6px 0;padding-left:12px}
+.hist-tag{display:inline-block;font-size:11px;font-weight:700;color:#0C447C;background:#E6F1FB;
+  border:1px solid #378ADD;border-radius:8px;padding:0 6px;margin-right:5px}
+
+/* ── 상세: 섹션 그룹핑 ───────────────────────────────────── */
+.detail-pane .pagehead{margin-bottom:14px}
+.sec{background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:14px 18px;margin-bottom:14px}
+.sec summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;
+  font-size:16px;font-weight:700;color:var(--navy);
+  padding-bottom:8px;border-bottom:2px solid #eef2f7;margin-bottom:12px}
+.sec summary::-webkit-details-marker{display:none}
+.sec summary .s-title{flex:1}
+.sec summary::after{content:'▾';color:var(--text2);font-size:12px;font-weight:400}
+.sec:not([open]) summary{border-bottom:none;padding-bottom:0;margin-bottom:0}
+.sec:not([open]) summary::after{content:'▸'}
+.sec .desc{margin:6px 0 0;white-space:pre-wrap}
+.req-total{font-size:13px;color:var(--text2);font-weight:600}
+.hist-add textarea,.req-add textarea{margin:0 0 8px}
+.sec .req.card{background:#fbfcfe}          /* 흰 섹션 위에서 요청 카드 살짝 구분 */
+.sec .req.card:last-child{margin-bottom:0}
+.times{font-size:12px;color:var(--text2);font-weight:400;white-space:nowrap}
+.overdue{color:#b23c3c;font-weight:700}
+.dday{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:8px;margin-left:5px;
+  background:#eef2f7;color:var(--text2);border:1px solid var(--border);vertical-align:middle;white-space:nowrap}
+.dday.dd-soon{background:#FAEEDA;color:#633806;border-color:#EF9F27}
+.dday.dd-over{background:#F7DCDC;color:#8A2020;border-color:#D98A8A}
+.dbwrap{overflow-x:auto;margin-bottom:16px}
+.dbwrap table{font-size:12px}
+.dbwrap td{max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 우선순위 배지 + 드래그 */
+.prio{display:inline-block;font-size:11px;font-weight:700;padding:0 7px;border-radius:8px;border:1px solid;vertical-align:middle}
+.prio.pr-high  {background:#F7DCDC;color:#8A2020;border-color:#D98A8A}
+.prio.pr-normal{background:#EEF2F7;color:#5C6B7A;border-color:#C3CFDD}
+.prio.pr-low   {background:#EAF1F7;color:#42708A;border-color:#A9C9DD}
+.list tr[draggable=true]{cursor:grab}
+.list tr[draggable=true]:active{cursor:grabbing}

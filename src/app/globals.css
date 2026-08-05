@@ -1,0 +1,209 @@
+/* app/globals.css */
+@import "tailwindcss";
+
+:root {
+  --blue: #185FA5;
+  --navy: #042C53;
+  --bg: #F5F7FA;
+  --surface: #FFF;
+  --border: #E1E7EF;
+  --text: #1A2733;
+  --text2: #5C6B7A;
+
+  /* Post-it Colors */
+  --postit-yellow: #FFF9B1;
+  --postit-pink: #FFD4E5;
+  --postit-mint: #C1F0D4;
+  --postit-sky: #CDE6FA;
+  --postit-lilac: #E2D4F0;
+  --postit-coral: #FFD6C9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--navy);
+  color: #fff;
+  padding: 12px 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.topbar .brand {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+main {
+  flex: 1;
+  padding: 20px 24px;
+}
+
+.btn {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:hover {
+  background: #14508c;
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--blue);
+  border: 1px solid var(--border);
+}
+.btn.ghost:hover {
+  background: #E6F1FB;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--blue);
+}
+
+/* Post-it Grid (Masonry-like flex or grid) */
+.postit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.postit-card {
+  padding: 16px;
+  border-radius: 2px 2px 12px 2px;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.08);
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.postit-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-width: 12px 12px 0 0;
+  border-style: solid;
+  border-color: rgba(0,0,0,0.1) var(--bg) transparent transparent;
+  border-radius: 0 0 12px 0;
+}
+.postit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 6px 12px rgba(0,0,0,0.12);
+}
+
+.postit-content {
+  font-size: 15px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #333;
+}
+
+/* Filters & Folders Bar */
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.folder-tab {
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text2);
+  transition: all 0.2s;
+}
+.folder-tab.active {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+.folder-tab:hover:not(.active) {
+  background: #eef2f7;
+}
+
+/* Color Circle for filters */
+.color-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s;
+}
+.color-circle:hover {
+  transform: scale(1.1);
+}
+.color-circle.active {
+  border-color: var(--navy);
+}
+
+/* Form Dialog */
+dialog {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  width: 420px;
+  max-width: 92vw;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+dialog::backdrop {
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(2px);
+}
+dialog[open] {
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
