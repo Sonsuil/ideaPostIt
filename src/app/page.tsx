@@ -35,6 +35,7 @@ export default function Home() {
   const [openFolders, setOpenFolders] = useState<number[]>([]);
   const [activeColor, setActiveColor] = useState<string | null>(null);
   const [focusedWindow, setFocusedWindow] = useState<number | 'desktop'>('desktop');
+  const [viewMode, setViewMode] = useState<'canvas' | 'board'>('canvas');
   
   const dialogRef = useRef<HTMLDialogElement>(null);
   const folderDialogRef = useRef<HTMLDialogElement>(null);
@@ -208,6 +209,22 @@ export default function Home() {
           <button className="btn ghost sm" onClick={() => folderDialogRef.current?.showModal()}>
             + 새 폴더
           </button>
+          <div style={{ marginLeft: '16px', display: 'flex', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
+            <button 
+              className={`btn sm ${viewMode === 'canvas' ? '' : 'ghost'}`} 
+              style={{ borderRadius: 0, border: 'none', borderRight: '1px solid var(--border)' }}
+              onClick={() => setViewMode('canvas')}
+            >
+              바탕화면 뷰
+            </button>
+            <button 
+              className={`btn sm ${viewMode === 'board' ? '' : 'ghost'}`} 
+              style={{ borderRadius: 0, border: 'none' }}
+              onClick={() => setViewMode('board')}
+            >
+              게시판 뷰
+            </button>
+          </div>
         </div>
 
         <div className="row">
@@ -232,13 +249,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Desktop Canvas */}
-      <div 
-        ref={desktopRef}
-        className="grid-bg"
-        style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
-        onMouseDown={() => setFocusedWindow('desktop')}
-      >
+      {viewMode === 'canvas' ? (
+        <>
+          {/* Desktop Canvas */}
+          <div 
+            ref={desktopRef}
+            className="grid-bg"
+            style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
+            onMouseDown={() => setFocusedWindow('desktop')}
+          >
         {/* Render Folder Icons */}
         {folders.map(folder => {
           const count = postits.filter(p => p.folder_id === folder.id).length;
@@ -406,6 +425,61 @@ export default function Home() {
           </Rnd>
         );
       })}
+      </>
+      ) : (
+        <div style={{ padding: '24px', height: '100%', overflow: 'auto', backgroundColor: 'var(--bg)' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', background: 'var(--surface)', borderRadius: '12px', padding: '20px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+            <h2 style={{ marginTop: 0, marginBottom: '20px', fontSize: '18px' }}>전체 쪽지 게시판</h2>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                  <th style={{ padding: '12px 8px', width: '60%' }}>내용</th>
+                  <th style={{ padding: '12px 8px', width: '15%' }}>위치 (폴더)</th>
+                  <th style={{ padding: '12px 8px', width: '10%' }}>색상</th>
+                  <th style={{ padding: '12px 8px', width: '15%' }}>관리</th>
+                </tr>
+              </thead>
+              <tbody>
+                {postits.map(postit => (
+                  <tr key={postit.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <td style={{ padding: '12px 8px', whiteSpace: 'pre-wrap', wordBreak: 'break-word', lineHeight: '1.5' }}>{postit.content}</td>
+                    <td style={{ padding: '12px 8px' }}>
+                      <select 
+                        className="sm"
+                        style={{ width: '100%', padding: '6px', fontSize: '13px' }}
+                        value={postit.folder_id || ''}
+                        onChange={(e) => handleMoveFolder(postit.id, e.target.value ? Number(e.target.value) : null)}
+                      >
+                        <option value="">바탕화면</option>
+                        {folders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                      </select>
+                    </td>
+                    <td style={{ padding: '12px 8px' }}>
+                      <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: postit.color, border: '1px solid rgba(0,0,0,0.1)' }} title={postit.color} />
+                    </td>
+                    <td style={{ padding: '12px 8px' }}>
+                      <button
+                        onClick={() => handleDeletePostit(postit.id)}
+                        className="btn danger sm"
+                        style={{ padding: '4px 12px' }}
+                      >
+                        삭제
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {postits.length === 0 && (
+                  <tr>
+                    <td colSpan={4} style={{ padding: '40px', textAlign: 'center', color: 'var(--text2)' }}>
+                      등록된 쪽지가 없습니다.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* Postit Dialog */}
       <dialog ref={dialogRef}>
