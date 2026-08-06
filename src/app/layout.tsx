@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Anonymous Post-it Board",
-  description: "A simple board to share ideas anonymously",
+  title: "ERP 기능 개선 요청사항",
+  description: "ERP 기능 개선을 위한 익명 요청 게시판",
 };
 
 export default function RootLayout({
@@ -15,8 +15,8 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <header className="topbar">
-          <div className="brand">💡 IdeaGather</div>
-          <div className="who">익명 포스트잇 보드</div>
+          <div className="brand">💡 ERP 기능 개선 요청사항</div>
+          <div className="who">익명 게시판</div>
         </header>
         <main>
           {children}
