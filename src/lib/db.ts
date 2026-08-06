@@ -19,7 +19,8 @@ db.exec(`
     pos_x REAL NOT NULL DEFAULT 100,
     pos_y REAL NOT NULL DEFAULT 100,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    is_locked INTEGER DEFAULT 0
+    is_locked INTEGER DEFAULT 0,
+    board_id TEXT NOT NULL DEFAULT 'erp'
   );
 
   CREATE TABLE IF NOT EXISTS postits (
@@ -31,6 +32,7 @@ db.exec(`
     pos_y REAL NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     is_locked INTEGER DEFAULT 0,
+    board_id TEXT NOT NULL DEFAULT 'erp',
     FOREIGN KEY(folder_id) REFERENCES folders(id) ON DELETE SET NULL
   );
 `);
@@ -38,5 +40,7 @@ db.exec(`
 // Apply migrations safely
 try { db.exec('ALTER TABLE folders ADD COLUMN is_locked INTEGER DEFAULT 0'); } catch (e) { /* column exists */ }
 try { db.exec('ALTER TABLE postits ADD COLUMN is_locked INTEGER DEFAULT 0'); } catch (e) { /* column exists */ }
+try { db.exec('ALTER TABLE folders ADD COLUMN board_id TEXT NOT NULL DEFAULT "erp"'); } catch (e) { /* column exists */ }
+try { db.exec('ALTER TABLE postits ADD COLUMN board_id TEXT NOT NULL DEFAULT "erp"'); } catch (e) { /* column exists */ }
 
 export default db;
