@@ -59,16 +59,20 @@ export default function Board() {
   // References to track folder icon positions for collision detection
   const folderRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [authenticatedBoardId, setAuthenticatedBoardId] = useState<string | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true);
   const [passwordInput, setPasswordInput] = useState<string>("");
   const [authError, setAuthError] = useState<string>("");
 
   useEffect(() => {
     const checkAuth = async () => {
+      setPasswordInput("");
+      setAuthError("");
       const authKey = `auth_${boardId}`;
       if (sessionStorage.getItem(authKey) === 'true') {
-        setIsAuthenticated(true);
+        setAuthenticatedBoardId(boardId);
+      } else {
+        setAuthenticatedBoardId(null);
       }
       setIsCheckingAuth(false);
     };
@@ -76,11 +80,11 @@ export default function Board() {
   }, [boardId]);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (authenticatedBoardId === boardId) {
       fetchFolders();
       fetchPostits();
     }
-  }, [activeColor, isAuthenticated]);
+  }, [activeColor, authenticatedBoardId, boardId]);
 
   const fetchFolders = async () => {
     const res = await fetch(`/api/folders?board_id=${encodeURIComponent(boardId)}`);
@@ -431,7 +435,7 @@ export default function Board() {
       const data = await res.json();
       if (data.success) {
         sessionStorage.setItem(`auth_${boardId}`, 'true');
-        setIsAuthenticated(true);
+        setAuthenticatedBoardId(boardId);
       } else {
         setAuthError(data.error || "비밀번호가 일치하지 않습니다.");
       }
@@ -444,7 +448,7 @@ export default function Board() {
     return <div style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>확인 중...</div>;
   }
 
-  if (!isAuthenticated) {
+  if (authenticatedBoardId !== boardId) {
     return (
       <div style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--background)' }}>
         <form onSubmit={handleAuthSubmit} style={{ background: 'var(--surface)', padding: '40px', borderRadius: '16px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px' }}>
@@ -478,7 +482,6 @@ export default function Board() {
     <>
       <header className="topbar" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => router.push('/')}>
         <div className="brand" style={{ fontSize: '20px', fontWeight: 'bold' }}>💡 {boardId.toUpperCase()} 기능 개선 요청사항</div>
-        <div className="who" style={{ fontSize: '14px', marginLeft: '12px' }}>익명 게시판</div>
       </header>
       <div style={{ width: '100%', height: 'calc(100vh - 64px)', position: 'relative', overflow: 'hidden' }}>
         
