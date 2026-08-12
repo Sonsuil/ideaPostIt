@@ -35,6 +35,15 @@ db.exec(`
     board_id TEXT NOT NULL DEFAULT 'erp',
     FOREIGN KEY(folder_id) REFERENCES folders(id) ON DELETE SET NULL
   );
+
+  CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    postit_id INTEGER NOT NULL,
+    admin_id TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(postit_id) REFERENCES postits(id) ON DELETE CASCADE
+  );
 `);
 
 // Apply migrations safely
