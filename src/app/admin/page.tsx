@@ -182,9 +182,9 @@ export default function AdminPage() {
             </thead>
             <tbody>
               {postits.map(postit => (
-                <tr key={postit.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                <tr key={postit.id} style={{ borderBottom: '1px solid var(--border)', background: postit.color, color: '#000' }}>
                   <td style={{ padding: '16px' }}>
-                    <span style={{ display: 'inline-block', padding: '4px 8px', borderRadius: '4px', background: 'var(--background)', fontSize: '13px', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                    <span style={{ display: 'inline-block', padding: '4px 8px', borderRadius: '4px', background: 'rgba(0,0,0,0.1)', fontSize: '13px', fontWeight: 'bold', textTransform: 'uppercase' }}>
                       {postit.board_id}
                     </span>
                   </td>
@@ -193,18 +193,18 @@ export default function AdminPage() {
                       {postit.content}
                     </div>
                   </td>
-                  <td style={{ padding: '16px', color: 'var(--text2)', fontSize: '13px' }}>
+                  <td style={{ padding: '16px', color: 'rgba(0,0,0,0.6)', fontSize: '13px' }}>
                     {new Date(postit.created_at).toLocaleString()}
                   </td>
                   <td style={{ padding: '16px' }}>
                     {postit.comments && postit.comments.length > 0 ? (
-                      <span style={{ color: 'var(--blue)', fontWeight: 'bold' }}>{postit.comments.length}개</span>
+                      <span style={{ color: '#0056b3', fontWeight: 'bold' }}>{postit.comments.length}개</span>
                     ) : (
-                      <span style={{ color: 'var(--text2)' }}>없음</span>
+                      <span style={{ color: 'rgba(0,0,0,0.5)' }}>없음</span>
                     )}
                   </td>
                   <td style={{ padding: '16px' }}>
-                    <button className="btn sm" onClick={() => openPostitDetails(postit)}>보기/댓글</button>
+                    <button className="btn sm" style={{ background: 'rgba(0,0,0,0.05)', color: '#000', border: '1px solid rgba(0,0,0,0.1)' }} onClick={() => openPostitDetails(postit)}>보기/댓글</button>
                   </td>
                 </tr>
               ))}
